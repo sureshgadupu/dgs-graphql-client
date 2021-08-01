@@ -25,6 +25,18 @@ public class Employee {
 		this.hire_date = hire_date;
 		this.department = department;
 	}
+	
+	public Employee(Integer id,String first_name, String last_name, Gender gender, LocalDate birth_date, LocalDate hire_date
+			) {
+		super();
+		this.id = id;
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.gender = gender;
+		this.birth_date = birth_date;
+		this.hire_date = hire_date;
+		//this.department = department;
+	}
 
 	public Integer getId() {
 		return id;
@@ -58,11 +70,11 @@ public class Employee {
 		this.gender = gender;
 	}
 
-	public LocalDate getEbirth_date() {
+	public LocalDate getBirth_date() {
 		return birth_date;
 	}
 
-	public void setEbirth_date(LocalDate birth_date) {
+	public void setBirth_date(LocalDate birth_date) {
 		this.birth_date = birth_date;
 	}
 
@@ -81,5 +93,7 @@ public class Employee {
 	public void setDepartment(Department department) {
 		this.department = department;
 	}
+
+	
 
 }

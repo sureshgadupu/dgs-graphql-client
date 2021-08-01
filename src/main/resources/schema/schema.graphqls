@@ -5,7 +5,7 @@ type Employee {
 	gender: Gender
 	birth_date: Date
 	hire_date: Date	
-    department: Department!
+    department: Department
 }
 
 type Department {
@@ -21,10 +21,29 @@ enum Gender {
 
 scalar Date
 
+input SubmittedEmployee {
+	first_name: String!
+	last_name: String!
+	gender: Gender
+	birth_date: Date
+	hire_date: Date
+	deptId:Int!
+}
+
+input SubmittedDepartment {
+    dept_name : String!
+}
+
 type Query {
    
    employee(id : Int) : Employee
    employees :[Employee!]
    departments :[Department!]
    getEmployeesByDeptId(deptId : Int) :[Employee!]
+}
+
+type Mutation {
+  createDepartment(department : SubmittedDepartment) :Department
+  createEmployee(employee : SubmittedEmployee) : Employee
+  updateEmpDepartment(emp_id: Int! , dept_id : Int!) : Boolean
 }
