@@ -12,7 +12,9 @@ public class Employee {
 	private LocalDate hire_date;
 	private Department department;
 	
-	
+	public Employee() {
+		
+	}
 
 	public Employee(Integer id, String first_name, String last_name, Gender gender, LocalDate birth_date, LocalDate hire_date,
 			Department department) {
@@ -34,10 +36,9 @@ public class Employee {
 		this.last_name = last_name;
 		this.gender = gender;
 		this.birth_date = birth_date;
-		this.hire_date = hire_date;
-		//this.department = department;
+		this.hire_date = hire_date;		
 	}
-
+	
 	public Integer getId() {
 		return id;
 	}

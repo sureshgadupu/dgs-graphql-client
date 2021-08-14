@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
+import org.reactivestreams.Publisher;
+
 import com.fullstackdev.graphql.eis.entity.Department;
 import com.fullstackdev.graphql.eis.entity.Employee;
 import com.fullstackdev.graphql.eis.entity.Gender;
@@ -17,12 +19,19 @@ import com.fullstackdev.graphql.eis.entity.SubmittedEmployee;
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsMutation;
 import com.netflix.graphql.dgs.DgsQuery;
+import com.netflix.graphql.dgs.DgsSubscription;
 import com.netflix.graphql.dgs.InputArgument;
 
 import graphql.GraphQLException;
+import reactor.core.publisher.ConnectableFlux;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 
 @DgsComponent
 public class EmployeeDataFetcher {
+
+	private FluxSink<Employee> employeeStream;
+	private ConnectableFlux<Employee> employeePublisher;
 
 	Department hrDepartment = new Department(1, "HR");
 	Department finDepartment = new Department(2, "Finance");
@@ -57,12 +66,19 @@ public class EmployeeDataFetcher {
 	);
 
 	@PostConstruct
-	public void setEmpstoDept() {
+	public void init() {
 
 		departmentList.forEach(dept -> {
 			dept.setEmployees(emps.stream().filter(emp -> emp.getDepartment().getId().equals(dept.getId()))
 					.collect(Collectors.toList()));
 		});
+
+		Flux<Employee> publisher = Flux.create(emitter -> {
+			employeeStream = emitter;
+		});
+
+		employeePublisher = publisher.publish();
+		employeePublisher.connect();
 	}
 
 	@DgsQuery
@@ -105,6 +121,8 @@ public class EmployeeDataFetcher {
 			throw new GraphQLException("Department does not exists with id " + employee.getDeptId());
 		}
 		emps.add(emp);
+
+		employeeStream.next(emp);
 		return emp;
 
 	}
@@ -117,19 +135,24 @@ public class EmployeeDataFetcher {
 		return department;
 
 	}
-	
+
 	@DgsMutation
-	public Boolean updateEmpDepartment(@InputArgument Integer emp_id,@InputArgument Integer dept_id) {
-          System.out.println(emp_id + " : "+ dept_id);
-		Optional<Department> optionalDept = departmentList.stream().filter(dept -> dept.getId() == dept_id)
-				.findFirst();
+	public Boolean updateEmpDepartment(@InputArgument Integer emp_id, @InputArgument Integer dept_id) {
+		System.out.println(emp_id + " : " + dept_id);
+		Optional<Department> optionalDept = departmentList.stream().filter(dept -> dept.getId() == dept_id).findFirst();
 		Optional<Employee> optionalEmp = emps.stream().filter(emp -> emp.getId().equals(emp_id)).findFirst();
-		if(optionalDept.isPresent() && optionalEmp.isPresent()) {
+		if (optionalDept.isPresent() && optionalEmp.isPresent()) {
 			optionalEmp.get().setDepartment(optionalDept.get());
 			return true;
 		}
 		return false;
 
+	}
+
+	@DgsSubscription
+	public Publisher<Employee> notifyEmployeeCreation() {
+		
+		return employeePublisher;
 	}
 
 }

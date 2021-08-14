@@ -47,3 +47,7 @@ type Mutation {
   createEmployee(employee : SubmittedEmployee) : Employee
   updateEmpDepartment(emp_id: Int! , dept_id : Int!) : Boolean
 }
+
+type Subscription {
+   notifyEmployeeCreation : Employee
+}
