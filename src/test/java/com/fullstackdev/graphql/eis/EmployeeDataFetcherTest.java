@@ -77,8 +77,7 @@ public class EmployeeDataFetcherTest {
 		publisher.subscribe(new Subscriber<ExecutionResult>() {
 			@Override
 			public void onSubscribe(Subscription s) {
-				s.request(1);
-				;
+				s.request(1);				
 			}
 
 			@Override

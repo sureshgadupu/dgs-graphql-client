@@ -5,7 +5,7 @@ type Employee {
 	gender: Gender
 	birth_date: Date
 	hire_date: Date	
-    department: Department
+    department: Department   
 }
 
 type Department {
@@ -20,6 +20,7 @@ enum Gender {
 }
 
 scalar Date
+scalar Upload
 
 input SubmittedEmployee {
 	first_name: String!
@@ -46,6 +47,7 @@ type Mutation {
   createDepartment(department : SubmittedDepartment) :Department
   createEmployee(employee : SubmittedEmployee) : Employee
   updateEmpDepartment(emp_id: Int! , dept_id : Int!) : Boolean
+  uploadEmployeePhoto(emp_id: Int! ,inputFile : Upload!): String
 }
 
 type Subscription {
