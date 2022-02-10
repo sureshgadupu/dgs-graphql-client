@@ -11,13 +11,16 @@ public class Employee {
 	private LocalDate birth_date;
 	private LocalDate hire_date;
 	private Department department;
+	private String city;
+	private String country;
+	private Double temperature;
 	
 	public Employee() {
 		
 	}
 
 	public Employee(Integer id, String first_name, String last_name, Gender gender, LocalDate birth_date, LocalDate hire_date,
-			Department department) {
+			Department department, String city, String country) {
 		super();
 		this.id = id;
 		this.first_name = first_name;
@@ -26,17 +29,21 @@ public class Employee {
 		this.birth_date = birth_date;
 		this.hire_date = hire_date;
 		this.department = department;
+		this.city = city;
+		this.country = country;
 	}
 	
-	public Employee(Integer id,String first_name, String last_name, Gender gender, LocalDate birth_date, LocalDate hire_date
-			) {
+	public Employee(Integer id,String first_name, String last_name, Gender gender, LocalDate birth_date, LocalDate hire_date, String city
+			, String country) {
 		super();
 		this.id = id;
 		this.first_name = first_name;
 		this.last_name = last_name;
 		this.gender = gender;
 		this.birth_date = birth_date;
-		this.hire_date = hire_date;		
+		this.hire_date = hire_date;
+		this.city = city;
+		this.country = country;
 	}
 	
 	public Integer getId() {
@@ -95,6 +102,27 @@ public class Employee {
 		this.department = department;
 	}
 
-	
+	public String getCity() {
+		return city;
+	}
 
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public Double getTemperature() {
+		return temperature;
+	}
+
+	public void setTemperature(Double temperature) {
+		this.temperature = temperature;
+	}
 }

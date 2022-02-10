@@ -4,7 +4,10 @@ type Employee {
 	last_name: String!
 	gender: Gender
 	birth_date: Date
-	hire_date: Date	
+	hire_date: Date
+	city: String
+    country: String
+    temperature : Float
     department: Department   
 }
 
@@ -29,6 +32,8 @@ input SubmittedEmployee {
 	birth_date: Date
 	hire_date: Date
 	deptId:Int!
+	city: String
+    country: String
 }
 
 input SubmittedDepartment {
